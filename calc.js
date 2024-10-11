@@ -1,23 +1,46 @@
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 function calculator() {
-    let num1 = parseFloat(prompt("Enter the first number:"));
-    let operator = prompt("Enter operator (+, -, *, /):");
-    let num2 = parseFloat(prompt("Enter the second number:"));
+    readline.question('Enter the first number: ', (firstNum) => {
+        const num1 = parseFloat(firstNum);
 
-    let result;
+        readline.question('Enter operator (+, -, *, /): ', (operator) => {
+            readline.question('Enter the second number: ', (secondNum) => {
+                const num2 = parseFloat(secondNum);
 
-    if (operator === '+') {
-        result = num1 + num2;
-    } else if (operator === '-') {
-        result = num1 - num2;
-    } else if (operator === '*') {
-        result = num1 * num2;
-    } else if (operator === '/') {
-        result = num1 / num2;
-    } else {
-        return "Invalid operator";
-    }
+                let result;
+                switch (operator) {
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        if (num2 === 0) {
+                            console.log("Error: Division by zero is not allowed.");
+                            readline.close();
+                            return;
+                        }
+                        result = num1 / num2;
+                        break;
+                    default:
+                        console.log('Invalid operator');
+                        readline.close();
+                        return;
+                }
 
-    return `Result: ${result}`;
+                console.log(`Result: ${result}`);
+                readline.close();
+            });
+        });
+    });
 }
 
-console.log(calculator());
+calculator();
